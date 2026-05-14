@@ -1,0 +1,18 @@
+# Data files (large CSVs)
+data/*.csv
+data/*.zip
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env
+
+# DB credentials
+.env
+*.env
+
+# OS
+.DS_Store
