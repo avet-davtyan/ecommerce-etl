@@ -17,6 +17,17 @@ FILES = {
 
 
 def extract() -> dict[str, pd.DataFrame]:
+    missing = [
+        filename for filename in FILES.values()
+        if not os.path.exists(os.path.join(DATA_DIR, filename))
+    ]
+    if missing:
+        print("ERROR: the following CSV files are missing from the data/ directory:")
+        for f in missing:
+            print(f"  - {f}")
+        print("Download them from https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce")
+        raise SystemExit(1)
+
     dataframes = {}
     for name, filename in FILES.items():
         path = os.path.join(DATA_DIR, filename)

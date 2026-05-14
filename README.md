@@ -44,7 +44,25 @@ cd ecommerce-etl
 
 **2. Download the dataset**
 
-Download from [Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) and place all CSV files in the `data/` directory.
+1. Go to [Kaggle – Brazilian E-Commerce Public Dataset by Olist](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce)
+2. Click **Download** (requires a free Kaggle account)
+3. Unzip and place all 9 CSV files into the `data/` directory
+
+The pipeline expects these files:
+```
+data/
+  olist_customers_dataset.csv
+  olist_geolocation_dataset.csv
+  olist_order_items_dataset.csv
+  olist_order_payments_dataset.csv
+  olist_order_reviews_dataset.csv
+  olist_orders_dataset.csv
+  olist_products_dataset.csv
+  olist_sellers_dataset.csv
+  product_category_name_translation.csv
+```
+
+If any file is missing, `python app/main.py` will tell you exactly which ones.
 
 **3. Configure credentials**
 
