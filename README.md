@@ -35,13 +35,34 @@ Download from Kaggle and place all files in the `data/` directory.
 
 ## Setup
 
-**1. Start PostgreSQL**
+**1. Clone and enter the repo**
+
+```bash
+git clone git@github.com:avet-davtyan/ecommerce-etl.git
+cd ecommerce-etl
+```
+
+**2. Download the dataset**
+
+Download from [Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) and place all CSV files in the `data/` directory.
+
+**3. Configure credentials**
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env` if you need a different port or password.
+
+**4. Start PostgreSQL**
 
 ```bash
 docker compose up -d
 ```
 
-**2. Create a virtual environment and install dependencies**
+The container is named `olist-postgres` and listens on `localhost:5434`.
+
+**5. Create a virtual environment and install dependencies**
 
 ```bash
 python3 -m venv venv
@@ -49,37 +70,21 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-**3. Configure credentials**
-
-Copy `.env.example` to `.env` and adjust if needed:
-
-```bash
-cp .env.example .env
-```
-
-**4. Apply the schema**
-
-```bash
-docker exec -i <container_name> psql -U postgres -d olist < sql/schema.sql
-```
-
-Or connect with any SQL client (e.g. DBeaver) on `localhost:5434` and run `sql/schema.sql`.
-
-**5. Run the ETL pipeline**
+**6. Run the pipeline**
 
 ```bash
 python app/main.py
 ```
 
-This extracts all CSVs, cleans the data, and loads it into PostgreSQL.
+This applies the schema, extracts all CSVs, cleans the data, and loads everything into PostgreSQL in one step.
 
-**6. Run the analytical queries**
+**7. Run the analytical queries**
+
+Open `sql/queries.sql` in any SQL client (e.g. DBeaver) connected to `localhost:5434`, or run:
 
 ```bash
-docker exec -i <container_name> psql -U postgres -d olist < sql/queries.sql
+docker exec -i olist-postgres psql -U postgres -d olist < sql/queries.sql
 ```
-
-Or open `sql/queries.sql` in your SQL client and run it.
 
 ---
 
@@ -92,10 +97,12 @@ ecommerce-etl/
     extract.py        # reads CSVs into DataFrames
     transform.py      # cleans and normalises data
     load.py           # inserts into PostgreSQL via psycopg2
-    main.py           # orchestrates extract → transform → load
+    main.py           # applies schema + orchestrates extract → transform → load
   sql/
     schema.sql        # CREATE TABLE statements, indexes, constraints
     queries.sql       # analytical SQL queries
+  docs/
+    dataset.md        # dataset description
   docker-compose.yml
   requirements.txt
   .env.example

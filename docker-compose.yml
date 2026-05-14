@@ -1,6 +1,7 @@
 services:
   postgres:
     image: postgres:17-alpine
+    container_name: olist-postgres
     env_file: .env
     environment:
       POSTGRES_DB: ${DB_NAME}
